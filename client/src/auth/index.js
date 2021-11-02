@@ -50,17 +50,24 @@ function AuthContextProvider(props) {
     }
 
     auth.loginUser = async function (loginData, store) {
-        const response = await api.loginUser(loginData);
-        if (response.status === 200) {
-            authReducer({
-                type: AuthActionType.LOG_IN,
-                payload: {
-                    loggedIn: response.data.loggedIn,
-                    user: response.data.user
-                }
-            })
-            history.push("/");
-            store.loadIdNamePairs();
+        console.log(loginData);
+        try {
+            console.log("Reached auth index.js!");
+            const response = await api.loginUser(loginData);
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.LOG_IN,
+                    payload: {
+                        loggedIn: response.data.loggedIn,
+                        user: response.data.user
+                    }
+                })
+                console.log("Successful login!");
+                history.push("/");
+                store.loadIdNamePairs();
+            }
+        } catch (err) {
+            console.log(err.response.data.errorMessage);
         }
     }
 
@@ -78,16 +85,21 @@ function AuthContextProvider(props) {
     }
 
     auth.registerUser = async function(userData, store) {
+        console.log(userData);
+        try {
         const response = await api.registerUser(userData);      
-        if (response.status === 200) {
-            authReducer({
-                type: AuthActionType.REGISTER_USER,
-                payload: {
-                    user: response.data.user
-                }
-            })
-            history.push("/");
-            store.loadIdNamePairs();
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.REGISTER_USER,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                history.push("/");
+                store.loadIdNamePairs();
+            }
+        } catch (err) {
+            console.log(err.response.data.errorMessage);
         }
     }
 

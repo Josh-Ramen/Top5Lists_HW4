@@ -124,8 +124,21 @@ registerUser = async (req, res) => {
     }
 }
 
+logoutUser = async (req, res) => {
+    console.log("Got to user-controller");
+    try {
+        await res.clearCookie("token").status(200).json({
+            success: true
+        }).send();
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ errorMessage: "Unknown error" }).send();
+    }
+}
+
 module.exports = {
     loginUser,
     getLoggedIn,
-    registerUser
+    registerUser,
+    logoutUser
 }

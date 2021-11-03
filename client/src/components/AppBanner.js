@@ -80,7 +80,12 @@ export default function AppBanner() {
     }
     
     function getAccountMenu(loggedIn) {
-        return <AccountCircle />;
+        if (loggedIn) {
+            return <AccountCircle />;
+        } else {
+            console.log("Not logged in.");
+            return <AccountCircle />;
+        }
     }
 
     return (
@@ -106,7 +111,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            { getAccountMenu(auth.loggedIn) }
+                            { getAccountMenu(auth.getLoggedIn) }
                         </IconButton>
                     </Box>
                 </Toolbar>

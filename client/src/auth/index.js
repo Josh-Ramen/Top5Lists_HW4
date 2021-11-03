@@ -9,7 +9,8 @@ console.log("create AuthContext: " + AuthContext);
 export const AuthActionType = {
     LOG_IN: "LOG_IN",
     GET_LOGGED_IN: "GET_LOGGED_IN",
-    REGISTER_USER: "REGISTER_USER"
+    REGISTER_USER: "REGISTER_USER",
+    LOG_OUT: "LOG_OUT"
 }
 
 function AuthContextProvider(props) {
@@ -44,15 +45,19 @@ function AuthContextProvider(props) {
                     loggedIn: true
                 })
             }
+            case AuthActionType.LOG_OUT: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false
+                })
+            }
             default:
                 return auth;
         }
     }
 
     auth.loginUser = async function (loginData, store) {
-        console.log(loginData);
         try {
-            console.log("Reached auth index.js!");
             const response = await api.loginUser(loginData);
             if (response.status === 200) {
                 authReducer({
@@ -62,7 +67,6 @@ function AuthContextProvider(props) {
                         user: response.data.user
                     }
                 })
-                console.log("Successful login!");
                 history.push("/");
                 store.loadIdNamePairs();
             }
@@ -85,18 +89,33 @@ function AuthContextProvider(props) {
     }
 
     auth.registerUser = async function(userData, store) {
-        console.log(userData);
         try {
-        const response = await api.registerUser(userData);      
+            const response = await api.registerUser(userData);      
+                if (response.status === 200) {
+                    authReducer({
+                        type: AuthActionType.REGISTER_USER,
+                        payload: {
+                            user: response.data.user
+                        }
+                    })
+                    history.push("/");
+                    store.loadIdNamePairs();
+                }
+        } catch (err) {
+            console.log(err.response.data.errorMessage);
+        }
+    }
+
+    auth.logoutUser = async function() {
+        try {
+            console.log("Made it to auth.logoutUser");
+            const response = await api.logoutUser();
             if (response.status === 200) {
                 authReducer({
-                    type: AuthActionType.REGISTER_USER,
-                    payload: {
-                        user: response.data.user
-                    }
+                    type: AuthActionType.LOG_OUT,
+                    payload: {}
                 })
                 history.push("/");
-                store.loadIdNamePairs();
             }
         } catch (err) {
             console.log(err.response.data.errorMessage);

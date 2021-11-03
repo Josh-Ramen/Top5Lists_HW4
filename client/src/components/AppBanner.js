@@ -81,9 +81,16 @@ export default function AppBanner() {
     
     function getAccountMenu(loggedIn) {
         if (loggedIn) {
-            return <AccountCircle />;
+            let initials = auth.user.firstName[0] + auth.user.lastName[0];
+            console.log(initials);
+            return <Typography                        
+                variant="h4"
+                noWrap
+                component="div"
+                sx={{ display: { xs: 'none', sm: 'block' } }}>
+                        {initials}
+            </Typography>;
         } else {
-            console.log("Not logged in.");
             return <AccountCircle />;
         }
     }
@@ -111,7 +118,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            { getAccountMenu(auth.getLoggedIn) }
+                            { getAccountMenu(auth.loggedIn) }
                         </IconButton>
                     </Box>
                 </Toolbar>

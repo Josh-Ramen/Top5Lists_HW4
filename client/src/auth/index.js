@@ -148,18 +148,10 @@ function AuthContextProvider(props) {
     }
 
     return (
-        <div>
-            <AuthContext.Provider value={{
-                auth
-            }}>
-                {props.children}
-            </AuthContext.Provider>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+        <AuthContext.Provider value={{
+            auth
+        }}>{props.children}
+            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Sorry!
@@ -172,7 +164,7 @@ function AuthContextProvider(props) {
                     </Button>
                 </Box>
             </Modal>
-        </div>
+        </AuthContext.Provider>
     );
 }
 

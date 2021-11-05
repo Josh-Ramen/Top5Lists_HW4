@@ -82,7 +82,6 @@ export default function AppBanner() {
     function getAccountMenu(loggedIn) {
         if (loggedIn) {
             let initials = auth.user.firstName[0] + auth.user.lastName[0];
-            console.log(initials);
             return <Typography                        
                 variant="h4"
                 noWrap

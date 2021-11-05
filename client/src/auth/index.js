@@ -1,9 +1,25 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import api from '../api'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 const AuthContext = createContext();
 console.log("create AuthContext: " + AuthContext);
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR AUTH STATE THAT CAN BE PROCESSED
 export const AuthActionType = {
@@ -19,6 +35,12 @@ function AuthContextProvider(props) {
         loggedIn: false
     });
     const history = useHistory();
+
+    // THESE ARE FOR THE ERROR MODAL
+    const [error, setError] = React.useState("");
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => setOpen(false);
+    const handleOpen = () => setOpen(true);
 
     useEffect(() => {
         auth.getLoggedIn();
@@ -71,7 +93,8 @@ function AuthContextProvider(props) {
                 store.loadIdNamePairs();
             }
         } catch (err) {
-            console.log(err.response.data.errorMessage);
+            setError(err.response.data.errorMessage);
+            handleOpen();
         }
     }
 
@@ -88,25 +111,26 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.registerUser = async function(userData, store) {
+    auth.registerUser = async function (userData, store) {
         try {
-            const response = await api.registerUser(userData);      
-                if (response.status === 200) {
-                    authReducer({
-                        type: AuthActionType.REGISTER_USER,
-                        payload: {
-                            user: response.data.user
-                        }
-                    })
-                    history.push("/");
-                    store.loadIdNamePairs();
-                }
+            const response = await api.registerUser(userData);
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.REGISTER_USER,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                history.push("/");
+                store.loadIdNamePairs();
+            }
         } catch (err) {
-            console.log(err.response.data.errorMessage);
+            setError(err.response.data.errorMessage);
+            handleOpen();
         }
     }
 
-    auth.logoutUser = async function() {
+    auth.logoutUser = async function () {
         try {
             console.log("Made it to auth.logoutUser");
             const response = await api.logoutUser();
@@ -118,16 +142,37 @@ function AuthContextProvider(props) {
                 history.push("/");
             }
         } catch (err) {
-            console.log(err.response.data.errorMessage);
+            setError(err.response.data.errorMessage);
+            handleOpen();
         }
     }
 
     return (
-        <AuthContext.Provider value={{
-            auth
-        }}>
-            {props.children}
-        </AuthContext.Provider>
+        <div>
+            <AuthContext.Provider value={{
+                auth
+            }}>
+                {props.children}
+            </AuthContext.Provider>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Sorry!
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {error}
+                    </Typography>
+                    <Button onClick={handleClose}>
+                        OK
+                    </Button>
+                </Box>
+            </Modal>
+        </div>
     );
 }
 

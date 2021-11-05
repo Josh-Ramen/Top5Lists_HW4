@@ -14,7 +14,7 @@ loginUser = async (req, res) => {
         if (!existingUser) {
             return res
                 .status(400)
-                .json({ errorMessage: "No such user exists." });
+                .json({ errorMessage: "That email is not registered." });
         }
 
         console.log("User exists!")
@@ -40,11 +40,11 @@ loginUser = async (req, res) => {
         } else {
             return res
                     .status(400)
-                    .json({ errorMessage: "Passwords do not match." });
+                    .json({ errorMessage: "That is not the correct password." });
         }
     } catch (err) {
         console.error(err);
-        res.status(500).send();
+        res.status(500).json({ errorMessage: "There was a problem with that logout request." }).send();
     }
 }
 
@@ -120,7 +120,7 @@ registerUser = async (req, res) => {
         }).send();
     } catch (err) {
         console.error(err);
-        res.status(500).send();
+        res.status(500).json({ errorMessage: "There was a problem with that register request." }).send();
     }
 }
 
@@ -132,7 +132,7 @@ logoutUser = async (req, res) => {
         }).send();
     } catch (err) {
         console.error(err);
-        res.status(500).json({ errorMessage: "Unknown error" }).send();
+        res.status(500).json({ errorMessage: "There was a problem with that logout request." }).send();
     }
 }
 

@@ -132,7 +132,6 @@ function AuthContextProvider(props) {
 
     auth.logoutUser = async function () {
         try {
-            console.log("Made it to auth.logoutUser");
             const response = await api.logoutUser();
             if (response.status === 200) {
                 authReducer({

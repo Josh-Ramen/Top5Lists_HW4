@@ -233,9 +233,10 @@ function GlobalStoreContextProvider(props) {
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             let pairsArray = response.data.idNamePairs;
+            let filteredArray = pairsArray.filter(list => list.ownerEmail == auth.user.email);
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                payload: pairsArray
+                payload: filteredArray
             });
         }
         else {

@@ -165,7 +165,7 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
     store.changeListName = async function (id, newName) {
         let response = await api.getTop5ListById(id);
-        if (response.data.success) {
+        if (response.data.success && response.data.top5List.ownerEmail === auth.user.email) {
             let top5List = response.data.top5List;
             top5List.name = newName;
             async function updateList(top5List) {
@@ -175,10 +175,11 @@ function GlobalStoreContextProvider(props) {
                         response = await api.getTop5ListPairs();
                         if (response.data.success) {
                             let pairsArray = response.data.idNamePairs;
+                            let filteredArray = pairsArray.filter(list => list.ownerEmail === auth.user.email);
                             storeReducer({
                                 type: GlobalStoreActionType.CHANGE_LIST_NAME,
                                 payload: {
-                                    idNamePairs: pairsArray,
+                                    idNamePairs: filteredArray,
                                     top5List: top5List
                                 }
                             });
@@ -233,7 +234,7 @@ function GlobalStoreContextProvider(props) {
         const response = await api.getTop5ListPairs();
         if (response.data.success) {
             let pairsArray = response.data.idNamePairs;
-            let filteredArray = pairsArray.filter(list => list.ownerEmail == auth.user.email);
+            let filteredArray = pairsArray.filter(list => list.ownerEmail === auth.user.email);
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: filteredArray
@@ -251,7 +252,7 @@ function GlobalStoreContextProvider(props) {
     store.markListForDeletion = async function (id) {
         // GET THE LIST
         let response = await api.getTop5ListById(id);
-        if (response.data.success) {
+        if (response.data.success && response.data.top5List.ownerEmail === auth.user.email) {
             let top5List = response.data.top5List;
             storeReducer({
                 type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
@@ -285,7 +286,7 @@ function GlobalStoreContextProvider(props) {
     // moveItem, updateItem, updateCurrentList, undo, and redo
     store.setCurrentList = async function (id) {
         let response = await api.getTop5ListById(id);
-        if (response.data.success) {
+        if (response.data.success && response.data.top5List.ownerEmail === auth.user.email) {
             let top5List = response.data.top5List;
 
             response = await api.updateTop5ListById(top5List._id, top5List);

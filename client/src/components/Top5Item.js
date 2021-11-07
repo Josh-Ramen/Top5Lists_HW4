@@ -70,6 +70,10 @@ function Top5Item(props) {
     if (draggedTo) {
         itemClass = "top5-item-dragged-to";
     }
+    let allowDrag = "true";
+    if (store.isItemEditActive) {
+        allowDrag = "false"; 
+    }
 
     let itemElement = 
         <ListItem
@@ -91,7 +95,7 @@ function Top5Item(props) {
             onDrop={(event) => {
                 handleDrop(event, (index + 1))
             }}
-            draggable="true"
+            draggable={allowDrag}
             sx={{ display: 'flex', p: 1 }}
             style={{
                 fontSize: '48pt',

@@ -1,17 +1,9 @@
 import { useContext } from 'react';
-import AuthContext from '../auth'
-import Copyright from './Copyright'
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import AuthContext from '../auth';
+import Copyright from './Copyright';
+import { Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);

@@ -1,10 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import api from '../api'
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import { Modal, Box, Button, Typography } from '@mui/material'
 
 const AuthContext = createContext();
 console.log("create AuthContext: " + AuthContext);

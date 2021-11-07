@@ -1,19 +1,11 @@
 import { useContext } from 'react';
-import AuthContext from '../auth'
-import Copyright from './Copyright'
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import AuthContext from '../auth';
+import Copyright from './Copyright';
+import { Avatar, Button, CssBaseline, TextField, Link, Paper, Box, Grid, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
 import Image from '../img/bg.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store';
 
 const theme = createTheme();
 

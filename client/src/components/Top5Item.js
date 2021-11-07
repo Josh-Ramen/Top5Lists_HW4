@@ -16,7 +16,11 @@ function Top5Item(props) {
     const [editedText, setEditedText] = useState(text);
 
     function toggleEdit() {
-        setEditActive(!editActive);
+        let newActive = !editActive;
+        if (newActive) {
+            store.setIsItemEditActive();
+        }
+        setEditActive(newActive);
     }
 
     function handleDragStart(event, targetId) {
@@ -42,7 +46,7 @@ function Top5Item(props) {
     function handleDrop(event, targetId) {
         event.preventDefault();
         let sourceId = event.dataTransfer.getData("item");
-        sourceId = sourceId.substring(sourceId.indexOf("-") + 1);
+        sourceId = parseInt(sourceId.substring(sourceId.indexOf("-") + 1));
         setDraggedTo(false);
 
         console.log("handleDrop (sourceId, targetId): ( " + sourceId + ", " + targetId + ")");

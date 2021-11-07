@@ -301,14 +301,23 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.addMoveItemTransaction = function (start, end) {
-        let transaction = new MoveItem_Transaction(store, start, end);
-        tps.addTransaction(transaction);
+        if (start !== end) {
+            let transaction = new MoveItem_Transaction(store, start, end);
+            tps.addTransaction(transaction);
+        }
     }
 
     store.addUpdateItemTransaction = function (index, newText) {
         let oldText = store.currentList.items[index];
-        let transaction = new UpdateItem_Transaction(store, index, oldText, newText);
-        tps.addTransaction(transaction);
+        if (oldText !== newText) {
+            let transaction = new UpdateItem_Transaction(store, index, oldText, newText);
+            tps.addTransaction(transaction);
+        } else {
+            storeReducer({
+                type: GlobalStoreActionType.SET_CURRENT_LIST,
+                payload: store.currentList
+            });
+        }
     }
 
     store.moveItem = function (start, end) {

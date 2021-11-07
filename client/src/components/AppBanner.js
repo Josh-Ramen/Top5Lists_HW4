@@ -75,7 +75,7 @@ export default function AppBanner() {
     if (auth.loggedIn) {
         menu = loggedInMenu;
         if (store.currentList) {
-            editToolbar = <EditToolbar />;
+            editToolbar = <EditToolbar editStatus={store.isItemEditActive} />;
         }
     }
     

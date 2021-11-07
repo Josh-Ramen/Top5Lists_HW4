@@ -21,6 +21,7 @@ function Top5Item(props) {
             store.setIsItemEditActive();
         }
         setEditActive(newActive);
+        setEditedText(text);
     }
 
     function handleDragStart(event, targetId) {

@@ -35,12 +35,10 @@ function Top5Item(props) {
 
     function handleDragEnter(event) {
         event.preventDefault();
-        console.log("entering");
     }
 
     function handleDragLeave(event) {
         event.preventDefault();
-        console.log("leaving");
         setDraggedTo(false);
     }
 
@@ -49,8 +47,6 @@ function Top5Item(props) {
         let sourceId = event.dataTransfer.getData("item");
         sourceId = parseInt(sourceId.substring(sourceId.indexOf("-") + 1));
         setDraggedTo(false);
-
-        console.log("handleDrop (sourceId, targetId): ( " + sourceId + ", " + targetId + ")");
 
         // UPDATE THE LIST
         store.addMoveItemTransaction(sourceId, targetId);
